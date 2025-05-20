@@ -3,10 +3,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
+import FlightForm from '../components/FlightForm';
+import FlightResults from '../components/FlightResults';
 
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const [results, setResults] = useState([])
   const router = useRouter();
 
   // Function to navigate to the booking page
@@ -79,6 +82,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative bg-blue-50 text-center py-24">
+        
         <div className="absolute inset-0">
           <Image
             src="/images/hassan1.jpg" // Add a background image here
@@ -88,6 +92,7 @@ export default function Home() {
             className="opacity-80"
           />
         </div>
+     
         <div className="relative z-10">
           <h2 className="text-5xl font-extrabold text-white">Explore the World with Us</h2>
           <p className="mt-4 text-lg text-white">Unforgettable journeys to breathtaking destinations.</p>
@@ -96,7 +101,13 @@ export default function Home() {
           </button>
         </div>
       </section>
- 
+  <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-6">
+        <h1 className="text-2xl font-bold mb-4">✈️ Flight Finder</h1>
+        <FlightForm onSearch={setResults} />
+        <FlightResults results={results} />
+      </div>
+    </div>
       {/* Featured Destinations */}
       <section id="destinations" className="max-w-7xl mx-auto px-4 py-20">
         <h3 className="text-4xl font-semibold text-center mb-10">Featured Destinations</h3>
