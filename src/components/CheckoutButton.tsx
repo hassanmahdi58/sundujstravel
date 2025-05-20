@@ -1,12 +1,12 @@
 // 'use client';
 // import { useState } from 'react';
 
-// // Make sure this utility is properly implemented and returns an instance of Stripe or null
-// // const getStripe = async () => {
-// //   const { Stripe } = await import('@stripe/stripe-js'); // Dynamically import Stripe.js
-// //   const stripe = await Stripe('your-publishable-key-here'); // Replace with your actual publishable key
-// //   return stripe;
-// // };
+// Make sure this utility is properly implemented and returns an instance of Stripe or null
+// const getStripe = async () => {
+//   const { Stripe } = await import('@stripe/stripe-js'); // Dynamically import Stripe.js
+//   const stripe = await Stripe('your-publishable-key-here'); // Replace with your actual publishable key
+//   return stripe;
+// };
 
 // const CheckoutButton = () => {
 //   const [loading, setLoading] = useState(false);
